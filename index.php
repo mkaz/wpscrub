@@ -9,7 +9,7 @@ Plugin Name: wpscrub
 Plugin URI: https://github.com/mkaz/wpscrub
 Description: A plugin to remove a bit of unnecessary stuff from WordPress load.
 Author: Marcus Kazmierczak
-Version: 1.1
+Version: 1.2
 Author URI: https://mkaz.com/
 */
 
@@ -41,12 +41,19 @@ add_action( 'wp_enqueue_scripts', function() {
 	if ( !is_single() ) {
 		wp_dequeue_script('mkaz-code-syntax-prism-settings');
 		wp_dequeue_script('mkaz-code-syntax-prism-css');
+
 		wp_dequeue_style('mkaz-code-syntax-prism-css');
 		wp_dequeue_style('mkaz-code-syntax-css');
 		wp_dequeue_style('wp-block-library');
 	}
-}, 20 );
+}, 999 );
 
+add_action( 'enqueue_block_assets', function() {
+	if ( !is_single() && !is_admin() ) {
+		wp_dequeue_script('juxtapose-js');
+		wp_dequeue_style('juxtapose-css');
+	}
+}, 999 );
 
 // remove jquery-migrate
 add_action( 'wp_default_scripts', function( $scripts ) {
